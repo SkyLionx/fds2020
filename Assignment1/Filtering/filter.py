@@ -42,8 +42,6 @@ plt.sca(ax2)
 plt.imshow(smooth_img, cmap='gray', vmin=0, vmax=255)
 plt.show()
 
-
-
 ## function gaussdx (Question 1.c)
 
 sigma = 4.0
