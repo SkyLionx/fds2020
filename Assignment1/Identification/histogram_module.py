@@ -19,14 +19,20 @@ import gauss_module
 #  img_gray - input image in grayscale format
 #  num_bins - number of bins in the histogram
 def normalized_hist(img_gray, num_bins):
-    assert len(img_gray.shape) == 2, 'image dimension mismatch'
-    assert img_gray.dtype == 'float', 'incorrect image type'
+  assert len(img_gray.shape) == 2, 'image dimension mismatch'
+  assert img_gray.dtype == 'float', 'incorrect image type'
 
+  hists = np.zeros((num_bins))
+  bins = np.array([val * (255 / num_bins) for val in range(num_bins + 1)])
 
-    #... (your code here)
+  for pixel in img_gray.flat:
+    index = int(pixel // (255 / num_bins))
+    hists[index] += 1
 
+  # normalization
+  hists /= hists.max()
 
-    return hists, bins
+  return hists, bins
 
 
 
@@ -45,25 +51,25 @@ def rgb_hist(img_color_double, num_bins):
     assert len(img_color_double.shape) == 3, 'image dimension mismatch'
     assert img_color_double.dtype == 'float', 'incorrect image type'
 
-
-    #... (your code here)
-
-
-    #Define a 3D histogram  with "num_bins^3" number of entries
+    # Define a 3D histogram  with "num_bins^3" number of entries
     hists = np.zeros((num_bins, num_bins, num_bins))
     
+    linear_img = img_color_double.reshape(img_color_double.shape[0] * img_color_double.shape[1], 3)
+
     # Loop for each pixel i in the image 
     for i in range(img_color_double.shape[0]*img_color_double.shape[1]):
-        # Increment the histogram bin which corresponds to the R,G,B value of the pixel i
-        
-        #... (your code here)
-        pass
+      # Increment the histogram bin which corresponds to the R,G,B value of the pixel i
+      rgb = linear_img[i]
+      rIndex = int(rgb[0] // (255 / num_bins))
+      gIndex = int(rgb[1] // (255 / num_bins))
+      bIndex = int(rgb[2] // (255 / num_bins))
+      hists[rIndex, gIndex, bIndex] += 1
 
 
-    #Normalize the histogram such that its integral (sum) is equal 1
-    #... (your code here)
+    # Normalize the histogram such that its integral (sum) is equal 1
+    hists /= hists.max()
 
-    #Return the histogram as a 1D vector
+    # Return the histogram as a 1D vector
     hists = hists.reshape(hists.size)
     return hists
 

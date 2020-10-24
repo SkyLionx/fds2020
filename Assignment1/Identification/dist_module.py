@@ -10,6 +10,7 @@ import math
 def dist_intersect(x,y):
     
     #... (your code here)
+    pass
 
 
 
@@ -19,7 +20,7 @@ def dist_intersect(x,y):
 def dist_l2(x,y):
     
     #... (your code here)
-
+  pass
 
 
 # Compute chi2 distance between x and y
@@ -29,7 +30,7 @@ def dist_l2(x,y):
 def dist_chi2(x,y):
     
     #... (your code here)
-
+  pass
 
 
 def get_dist_by_name(x, y, dist_name):
