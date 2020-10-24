@@ -13,13 +13,11 @@ The function should return the Gaussian values Gx computed at the indexes x
 """
 def gauss(sigma):
     sigma = int(sigma)
-    x = range(-3 * sigma, 3 * sigma + 1)
+    x = np.arange(-3 * sigma, 3 * sigma + 1)
     Gx = [1 / (math.sqrt(2 * math.pi) * sigma) * math.exp(- ((i**2) / (2*(sigma**2)))) for i in x]
-
     Gx = np.array(Gx)
-    x = np.array(x)
 
-    return Gx.reshape((Gx.shape[0], 1)), x.reshape((x.shape[0], 1))
+    return Gx, x
 
 
 
@@ -47,6 +45,7 @@ def gaussianfilter(img, sigma):
     # import time
     # start = time.time()
     Gx, _ = gauss(sigma)
+    Gx = Gx.reshape((1, -1))
     smooth_img = conv2(img, Gx, "same")
     smooth_img = conv2(smooth_img, Gx.T, "same")
     # print("Ho impiegato", time.time() - start, "sec")
@@ -62,20 +61,21 @@ The function should return the Gaussian derivative values Dx computed at the ind
 """
 def gaussdx(sigma):
     sigma = int(sigma)
-    x = range(-3 * sigma, 3 * sigma + 1)
+    x = np.arange(-3 * sigma, 3 * sigma + 1)
     Dx = [- (1 / (math.sqrt(2 * math.pi) * (sigma**3))) * i * math.exp(- ((i**2) / (2*(sigma**2)))) for i in x]
 
     Dx = np.array(Dx)
-    x = np.array(x)
 
-    return Dx.reshape((Dx.shape[0], 1)), x.reshape((x.shape[0], 1))
+    return Dx, x
 
 
 
 def gaussderiv(img, sigma):
     Dx, _ = gaussdx(sigma)
-    imgDx = conv2(img, Dx, "same")
-    imgDy = conv2(img, Dx.T, "same")
+    kernel = Dx.reshape((1, Dx.shape[0]))
+
+    imgDx = conv2(img, kernel, "same")
+    imgDy = conv2(img, kernel.T, "same")
     
     return imgDx, imgDy
 
