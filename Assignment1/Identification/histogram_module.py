@@ -108,6 +108,15 @@ def rg_hist(img_color_double, num_bins):
     return hists
 
 
+def get_bin_index(value, num_bins, values_range=(0, 255)):
+    r_min, r_max = values_range
+    intervals = r_max - r_min
+    values_per_bin = intervals / num_bins
+    index = int((value - r_min) / values_per_bin)
+    if index >= num_bins:
+        return num_bins-1
+    return index
+
 #  Compute the *joint* histogram of Gaussian partial derivatives of the image in x and y direction
 #  Set sigma to 3.0 and cap the range of derivative values is in the range [-6, 6]
 #  The histogram should be normalized so that sum of all values equals 1
@@ -130,6 +139,8 @@ def dxdy_hist(img_gray, num_bins):
     linear_imgDx = imgDx.ravel()
     linear_imgDy = imgDy.ravel()
 
+
+    # Clamp values between -6 and 6
     linear_imgDx[linear_imgDx > 6] = 6
     linear_imgDx[linear_imgDx < -6] = -6
 
@@ -139,8 +150,8 @@ def dxdy_hist(img_gray, num_bins):
     for i in range(img_gray.shape[0] * img_gray.shape[1]):
         dxPixel = linear_imgDx[i]
         dyPixel = linear_imgDy[i]
-        dxIndex = int(dxPixel // (255 / num_bins))
-        dyIndex = int(dyPixel // (255 / num_bins))
+        dxIndex = get_bin_index(dxPixel, num_bins, values_range=(-6, 6))
+        dyIndex = get_bin_index(dyPixel, num_bins, values_range=(-6, 6))
         hists[dxIndex, dyIndex] += 1
 
     hists /= hists.sum()

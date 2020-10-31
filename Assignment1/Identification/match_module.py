@@ -33,21 +33,28 @@ def find_best_match(model_images, query_images, dist_type, hist_type, num_bins):
     
     D = np.zeros((len(model_images), len(query_images)))
     
+    for y in range(len(model_images)):
+        for x in range(len(query_images)):
+            model_hist = model_hists[y]
+            query_hist = query_hists[x]
+            D[y, x] = dist_module.get_dist_by_name(model_hist, query_hist, dist_type)
     
-    #... (your code here)
-
+    best_match = np.array([np.argmin(D[:, i]) for i in range(len(query_images))])
 
     return best_match, D
 
 
 
 def compute_histograms(image_list, hist_type, hist_isgray, num_bins):
-    
     image_hist = []
 
-    # Compute hisgoram for each image and add it at the bottom of image_hist
-
-    #... (your code here)
+    # Compute histogram for each image and add it at the bottom of image_hist
+    for filename in image_list:
+        img = np.array(Image.open(filename)).astype("double")
+        if hist_isgray:
+            img = rgb2gray(img)
+        hist = histogram_module.get_hist_by_name(img, num_bins, hist_type)
+        image_hist.append(hist)
 
     return image_hist
 
@@ -59,11 +66,29 @@ def compute_histograms(image_list, hist_type, hist_isgray, num_bins):
 # Note: use subplot command to show all the images in the same Python figure, one row per query image
 
 def show_neighbors(model_images, query_images, dist_type, hist_type, num_bins):
-    
-    
     plt.figure()
 
     num_nearest = 5  # show the top-5 neighbors
     
-    #... (your code here)
+    best_match, D = find_best_match(model_images, query_images, dist_type, hist_type, num_bins)
 
+    nrows = len(query_images)
+    ncols = num_nearest + 1
+
+    for y in range(nrows):
+        indexes = np.argsort(D[:, y])
+        for x in range(ncols):
+            index = y * ncols + x + 1
+            plt.subplot(nrows, ncols, index)
+            plt.axis("off")
+            if x == 0:
+                plt.title("Q" + str(y))
+                img = np.array(Image.open(query_images[y]))
+            else:
+                min_index = indexes[x - 1]
+                min_val = D[min_index, y]
+                plt.title("M{:.2}".format(min_val))
+                img = np.array(Image.open(model_images[min_index]))
+            plt.imshow(img)
+    
+    plt.show()
