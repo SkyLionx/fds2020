@@ -64,44 +64,6 @@ hist_rg = histogram_module.rg_hist(img_color.astype('double'), num_bins_color)
 plt.bar(np.array(range(1, hist_rg.size+1)), hist_rg)
 plt.show()
 
-# plt.figure(5)
-# plt.subplot(2, 3, 1)
-# plt.title("Immagine iniziale")
-# plt.imshow(img_color)
-
-# num_bins_dxdy = 10
-# imgDx, imgDy, hist_dxdy = histogram_module.dxdy_hist(img_gray, num_bins_dxdy)
-
-# plt.subplot(2, 3, 2)
-# plt.title("Gaussian Dx")
-# plt.imshow(imgDx, cmap="gray", interpolation="none")
-
-# plt.subplot(2, 3, 3)
-# plt.title("Gaussian Dy")
-# plt.imshow(imgDy, cmap="gray", interpolation="none")
-
-# plt.subplot(2, 3, 4)
-# plt.title("Dx Histogram")
-# hist_gray1, bin_gray1 = histogram_module.normalized_hist(imgDx, num_bins_dxdy)
-# plt.bar((bin_gray1[0:-1] + bin_gray1[1:])/2, hist_gray1)
-# plt.ylim([0., 1.])
-
-# plt.subplot(2, 3, 5)
-# plt.title("Dy Histogram")
-# hist_gray1, bin_gray1 = histogram_module.normalized_hist(imgDy, num_bins_dxdy)
-# plt.bar((bin_gray1[0:-1] + bin_gray1[1:])/2, hist_gray1)
-# plt.ylim([0., 1.])
-
-# plt.subplot(2, 3, 6)
-# plt.title("DxDy Histogram")
-# plt.bar(np.array(range(1, hist_dxdy.size+1)), hist_dxdy)
-# plt.ylim([0., 1.])
-
-
-# plt.show()
-
-# exit(42)
-
 # Compose and test dxdy histograms (histogram_module.dxdy_hist)
 plt.figure(5)
 plt.subplot(1, 2, 1)

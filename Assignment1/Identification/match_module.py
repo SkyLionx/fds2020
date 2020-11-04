@@ -33,12 +33,15 @@ def find_best_match(model_images, query_images, dist_type, hist_type, num_bins):
     
     D = np.zeros((len(model_images), len(query_images)))
     
+    # For each pair (model, query)
     for y in range(len(model_images)):
         for x in range(len(query_images)):
             model_hist = model_hists[y]
             query_hist = query_hists[x]
+            # Compute the distance
             D[y, x] = dist_module.get_dist_by_name(model_hist, query_hist, dist_type)
     
+    # Find the best_match for each query by taking the index of the minimum value in the i-th column
     best_match = np.array([np.argmin(D[:, i]) for i in range(len(query_images))])
 
     return best_match, D
@@ -51,9 +54,12 @@ def compute_histograms(image_list, hist_type, hist_isgray, num_bins):
     # Compute histogram for each image and add it at the bottom of image_hist
     for filename in image_list:
         img = np.array(Image.open(filename)).astype("double")
+        # Convert the image in grayvalue
         if hist_isgray:
             img = rgb2gray(img)
         hist = histogram_module.get_hist_by_name(img, num_bins, hist_type)
+        # We ignore the bins and get only the histogram
+        hist = hist[0] if isinstance(hist, tuple) else hist
         image_hist.append(hist)
 
     return image_hist
@@ -70,21 +76,25 @@ def show_neighbors(model_images, query_images, dist_type, hist_type, num_bins):
 
     num_nearest = 5  # show the top-5 neighbors
     
-    best_match, D = find_best_match(model_images, query_images, dist_type, hist_type, num_bins)
+    _, D = find_best_match(model_images, query_images, dist_type, hist_type, num_bins)
 
     nrows = len(query_images)
     ncols = num_nearest + 1
 
     for y in range(nrows):
+        # Get the indexes sorted by distance of the y-th column
         indexes = np.argsort(D[:, y])
         for x in range(ncols):
             index = y * ncols + x + 1
             plt.subplot(nrows, ncols, index)
             plt.axis("off")
+            # If it's the first column
             if x == 0:
+                # Plot the query image
                 plt.title("Q" + str(y))
                 img = np.array(Image.open(query_images[y]))
             else:
+                # Plot the x-th minus 1 best match
                 min_index = indexes[x - 1]
                 min_val = D[min_index, y]
                 plt.title("M{:.2}".format(min_val))
