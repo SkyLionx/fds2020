@@ -108,12 +108,18 @@ def rg_hist(img_color_double, num_bins):
     return hists
 
 
+# This function compute the bin index of a given value 
+# considering the number of bins and the range of the values
 def get_bin_index(value, num_bins, values_range=(0, 255)):
+    # Get the min and max of the range
     r_min, r_max = values_range
+    # Compute the integer intervals in the range
     intervals = r_max - r_min
     values_per_bin = intervals / num_bins
     index = int((value - r_min) / values_per_bin)
+    # If the index is equal to the number of bins
     if index >= num_bins:
+        # We place it in the last one
         return num_bins-1
     return index
 
@@ -136,9 +142,9 @@ def dxdy_hist(img_gray, num_bins):
 
     imgDx, imgDy = gauss_module.gaussderiv(img_gray, sigma)
 
+    # Reshape the images to two 1D array
     linear_imgDx = imgDx.ravel()
     linear_imgDy = imgDy.ravel()
-
 
     # Clamp values between -6 and 6
     linear_imgDx[linear_imgDx > 6] = 6

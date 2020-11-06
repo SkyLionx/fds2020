@@ -60,9 +60,9 @@ As we said earlier, the convolution operation is commutative so we obtain the sa
 
 \section*{Question 1.e}
 
-Convolving the images with the Dx kernel we can identify edges along the x-axis because the derivative of the image increases the gap between low and high values, creating new maxima and minima. The same effect can be obtained using Dy along the y-axis.
+Convolving the images with the Dx kernel we can identify edges along the x-axis because the derivative of the image increases the gap between low and high values, creating new maxima and minima, allowing us to detect edges by looking at them. The same effect can be obtained using Dy along the y-axis.
 
-Instead, if we compute the gradient of the two derivatives we can roughly detect edges in the original image in all directions. We use the gradient because the direction of the gradient is perpendicular to the edges and its magnitude represents the edge strength.
+Instead, if we compute the gradient of the two derivatives we can roughly detect edges in the original image in all directions. We use the gradient because its direction of the gradient is perpendicular to the edges and its magnitude represents the edge strength.
 But the edges are too broad and they not follow the requirement of good localization for an edge detector, so to obtain better results we should apply a thinning technique, like the non-maximum suppression in the Canny operator.
 
 In our case, we use a Gaussian function to smooth the image because since the derivative enhances noise we need to reduce it before applying the edge detection otherwise we will see a lot of edges in a noisy region.
@@ -275,7 +275,7 @@ In the Figure \ref{fig:best-match} we can see the matches produced by the previo
 \end{figure}
 
 From the results we can observe that with the greyvalue histogram type the performance are pretty bad since it's the one that uses the least amount of informations.
-With the DxDy histogram type we get acceptable performance only when used with the intersection distance.
+With the DxDy histogram type we get acceptable performance only when used with the intersect distance.
 
 Finally, the RG and RGB histogram types have a similar trend: they perform well with the  intersect measure and only in particolar cases with the other distance types, but the more complexity of the RGB histogram type produces better results.
 
