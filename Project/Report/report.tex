@@ -5,12 +5,16 @@
 \usepackage{graphicx}
 \graphicspath{ {./images/} }
 
+\usepackage{xcolor}
 \usepackage{tabularx}
 \usepackage{hyperref}
+
 
 \title{Final Project Report}
 \author{Fabrizio Rossi, Mina Makar, Matteo Orsini}
 \date{\today}
+
+\newcommand{\link}[2]{{\color{blue}{\href{#1}{#2}}}}
 
 \begin{document}
 
@@ -20,7 +24,7 @@
 \end{titlepage}
 
 \section{Abstract}
-In this document we present our project for the Foundation of Data Science course. Since United States is one of the busiest countries in terms of road traffic with nearly 280 million vehicles, the level of traffic is one of the reasons leading to more traffic accidents. 
+In this document we present our project for the Foundations of Data Science course. Since United States is one of the busiest countries in terms of road traffic with nearly 280 million vehicles, the level of traffic is one of the reasons leading to more traffic accidents. 
 
 In order to help traffic management, we compared the performances of several models to predict the impact on the traffic of an accident. We present an Exploratory Data Analysis of one dataset offered by Kaggle which contains about 3.5 million records of accidents, and after a feature engineering phase, we compared various models implemented using the scikit-learn library showing, which model performs the best.
 
@@ -28,17 +32,17 @@ In order to help traffic management, we compared the performances of several mod
 The problem we faced in our project was to predict the impact of an accident on the traffic, called severity, which goes from 1, a low impact on the traffic, to 4, an high impact on the traffic. We thought that predicting this value could be useful for an automated traffic control service, in order to take decisions according to the predicted severity. So we tried to answer the question: "What is the severity of an accident which happens in a particular place and in some particular conditions?".
 
 \section{Related work}
-As related work we inspected the several notebooks available on Kaggle and on the Web which used the same dataset, or tried to accomplish the same task. In this \href{https://ronghui-zhou.medium.com/how-you-can-avoid-car-accident-in-2020-c9626c9b6f68}{Medium article}, there is an in-depth analysis of the dataset state by state, and a comparison of different models deployed on our chosen dataset where the Random Forest performed the best.
+As related work we inspected the several notebooks available on Kaggle and on the Web which used the same dataset, or tried to accomplish the same task. In this Medium article (\link{https://ronghui-zhou.medium.com/how-you-can-avoid-car-accident-in-2020-c9626c9b6f68}{Link}), there is an in-depth analysis of the dataset state by state, and a comparison of different models deployed on our chosen dataset where the Random Forest performed the best.
 
-\href{https://www.kaggle.com/nikitagrec/usa-accidents-plotly-maps-text-classification}{Here}, instead, there is a Kaggle notebook in which the severity of an accident is predicted using just the description.
-\href{https://www.kaggle.com/jingzongwang/usa-car-accidents-severity-prediction}{This} other Kaggle notebook, presents an approach which only predicts if an accident will have severity 4 or not.
-\href{https://arxiv.org/pdf/1909.09638.pdf}{In this paper} a deep neural model is proposed to predict in real-time a geographical region of reasonable size, and a fine-grained time period in which an accident could occur using an augmentation of the dataset.
-\href{https://www.kaggle.com/davidroberts13/us-traffic-analysis-folium-rfm-wordcloud}{This Kaggle notebook} contains a similar work to ours but it's limited just on the Fairfield county.
+Here (\link{https://www.kaggle.com/nikitagrec/usa-accidents-plotly-maps-text-classification}{Link}), instead, there is a Kaggle notebook in which the severity of an accident is predicted using just the description.
+This (\link{https://www.kaggle.com/jingzongwang/usa-car-accidents-severity-prediction}{Link}) other Kaggle notebook, presents an approach which only predicts if an accident will have severity 4 or not.
+In this paper (\link{https://arxiv.org/pdf/1909.09638.pdf}{Link}) a deep neural model is proposed to predict in real-time a geographical region of reasonable size, and a fine-grained time period in which an accident could occur using an augmentation of the dataset.
+This Kaggle notebook (\link{https://www.kaggle.com/davidroberts13/us-traffic-analysis-folium-rfm-wordcloud}{Link}) contains a similar work to ours but it's limited just on the Fairfield county.
 
-In the end we used two works to compare our results: \href{https://www.kaggle.com/gcdatkin/automobile-accident-severity-prediction#Results}{this Kaggle notebook} and \href{https://medium.com/@vaibhavgope02/predicting-accident-severity-with-us-accidents-dataset-4aeaaae0b0af}{this Medium article}, which both used the same dataset to carry out our same goal using different models.
+In the end we used two works to compare our results: this Kaggle notebook (\link{https://www.kaggle.com/gcdatkin/automobile-accident-severity-prediction}{Link}) and this Medium article (\link{https://medium.com/@vaibhavgope02/predicting-accident-severity-with-us-accidents-dataset-4aeaaae0b0af}{Link}), which both used the same dataset to carry out our same goal using different models.
 
 \section{Dataset analysis}
-We based our work on a dataset found on Kaggle \href{https://www.kaggle.com/sobhanmoosavi/us-accidents}{(https://www.kaggle.com/sobhanmoosavi/us-accidents}), which contains about 3.5 million of records about accidents happened in the US.
+We based our work on a dataset found on Kaggle (\link{https://www.kaggle.com/sobhanmoosavi/us-accidents}{Link}), which contains about 3.5 million of records about accidents happened in the US.
 In the Table \ref{tab:features}, the features contained in the dataset are shown with a brief description on the second column.
 
 \begin{table}[h!]
@@ -159,26 +163,24 @@ In the attached notebook, we carried out an additional \textbf{Exploratory Data 
 
 \section{Proposed strategy}
 In this section we will describe our methodology of work to treat the features included in the dataset.
-First of all, we decomposed the Start\_Time feature in year, month, day, weekday, hour and minutes, in order to feed them to the models.
+First of all, we decomposed the \textbf{Start\_Time} feature in year, month, day, weekday, hour and minutes, in order to feed them to the models.
 
-Then, we computed the correlation matrix among all the feature, to inspect if we could remove some features highly correlated.
+Then, we computed the \textbf{correlation matrix} among all the feature, to inspect if we could remove some features highly correlated.
 
 From the matrix, shown in Figure \ref{img:corr-matrix}, we can see that the start and end GPS coordinates of the accidents are highly correlated.
 
-In fact, from the medium distance shown before, the end of the accident is usually close to the start, so we dropped the end GPS coordinates.
+In fact, from the medium distance shown in the EDA, the end of the accident is usually close to the start, so we dropped the end GPS coordinates.
 
-Moreover, the wind chill (temperature) is directly proportional to the temperature, so we decided to drop one Wind\_Chill(F).
+Moreover, the wind chill is directly proportional to the temperature, so we decided to drop the \textbf{Wind\_Chill(F)}.
 
-We can also see that the presence of a traffic signal is slightly correlated to the severity of an accident meaning that maybe traffic lights can help the traffic flow when an accident occurs.
-
-From the matrix we can also note that we couldn't compute the covariance with Turning\_Loop, and that's because it's always False.
+From the matrix we can also note that we couldn't compute the covariance with \textbf{Turning\_Loop}, and that's because it's always False.
 
 Upon a further analysis, we also decided to drop the following features for the reasons reported:
 
 \begin{itemize}
 \item \textbf{ID, Source}: since they don't carry any information for the severity, and we wanted to reduce the number of features;
-\item \textbf{TMC}: because it could already contains information about the accident severity that should be not available for the prediction when an accident is reported. For example TMC 106 means "stationary traffic for 10 km", but we should not have this information, since it's our goal to predict it;
-\item \textbf{End\_Time}: beause we cannot know in advance when the traffic flow will become regular again;
+\item \textbf{TMC}: because it could already contains information about the accident severity that should be not available for the prediction when an accident is reported. For example, TMC 106 means "stationary traffic for 10 km", but we should not have this information, since it's our goal to predict it;
+\item \textbf{End\_Time}: because we cannot know in advance when the traffic flow will become regular again;
 \item \textbf{Description}: most descriptions only report the name of the road of the accident, and so we decided to omit this feature for simplicity;
 \item \textbf{Number, Street, County, State, Zipcode, Country}: because we just focus on the City where the accident happened;
 \item \textbf{Timezone, Airport\_Code, Weather\_Timestamp}: because we think they are not useful for our task;
@@ -186,37 +188,37 @@ Upon a further analysis, we also decided to drop the following features for the 
 \item \textbf{Sunrise\_Sunset, Nautical\_Twilight, Astronomical\_Twilight}: because they are redundant.
 \end{itemize}
 
-\begin{figure}[h]
+\begin{figure}[h!]
 \centering
 \includegraphics[width=\textwidth]{correlation-matrix}
-\label{img:corr-matrix}
 \caption{Correlation matrix between the dataset features}
+\label{img:corr-matrix}
 \end{figure}
 
-Then, we removed duplicated records and we inspected the dataset to check if there were some anomalous or missing values.
-We fixed some errors in the Pressure(in) and Visibility(mi), by removing records with impossible values, and we reduced the number of weather conditions and wind directions by combining similar but not equal values to reduce the number of classes for those features. 
+Then, we \textbf{removed duplicated} records and we inspected the dataset to check if there were some anomalous or missing values.
+We \textbf{fixed some errors} in the Pressure(in) and the Visibility(mi) features, by removing records with impossible values, and we reduced the number of weather conditions and wind directions by combining similar but not equal values to reduce the number of classes for those features. 
 
-In the end we fixed missing values, by filling them with the mean, for numerical feature, and by dropping the entire record for categorical values, since the dataset contains lots of data.
+In the end we \textbf{fixed missing values}, by filling them with the mean, for numerical features, and by dropping the entire record for categorical values, since the dataset contains lots of data.
 
-At this point, we were almost ready to feed the dataset to Machine Learning models, but first we needed to handle a few more aspects.
+At this point, we were almost ready to feed the dataset to the Machine Learning models, but first we needed to handle a few more aspects.
 
 The most important of all was the number of records for each severity: as we can see from Figure \ref{img:unbalanced-dataset} the dataset was highly unbalanced.
 
-For this reason, we used the undersampling technique to even the number of records to the minority class which is severity 1. After the operation, each class contained about 26.000 records.
+For this reason, we used the \textbf{undersampling} technique to even the number of records to the minority class which is severity 1. After the operation, each class contained about 26.000 records.
 
-Then, we proceeded to scale the numerical features using the MinMaxScaler, and to encode the categorical ones: boolean features were encoded simply transforming false and true to 0s and 1s; the remaining ones were encoded using the one-hot encoding except City, which was encoded using binary encoding since it would have produced too many columns (about 12.000).
+Then, we proceeded to \textbf{scale the numerical features} using the MinMaxScaler, and to \textbf{encode the categorical ones}: boolean features were encoded simply transforming false and true to 0s and 1s; the remaining ones were encoded using the one-hot encoding except City, which was encoded using binary encoding since it would have produced too many columns (about 12.000).
 
 \begin{figure}[h!]
 \centering
 \includegraphics[width=0.6\textwidth]{unbalanced-dataset}
-\label{img:unbalanced-dataset}
 \caption{Number of records for each severity}
+\label{img:unbalanced-dataset}
 \end{figure}
 
 \section{Experimental results}
 In this section we present the results obtained with several Machine Learning models.
 
-We split the dataset into three parts: 64\% of the records formed the training set, which was used to train the models, 16\% formed the validation set, used to tune the hyperparameters, and the remaining 20\%, formed the test set, used to evaluate the best model.
+We \textbf{split the dataset} into three parts: 64\% of the records formed the training set, which was used to train the models, 16\% formed the validation set, used to tune the hyperparameters, and the remaining 20\%, formed the test set, used to evaluate the best model.
 
 We tested the following models to find the best one:
 
@@ -231,25 +233,25 @@ We tested the following models to find the best one:
 
 For each model we tuned the hyper-parameters on the validation set, either by using the grid search or by checking manually some values.
 
-For the Logistic Regression model, we experimented with the following solvers: Newton's solver, SAG and SAGA. We obtained the same accuracy scores , but Newton's solver took almost four times to run due to the computational power required to compute the inverse of the Hessian matrix.
+For the \textbf{Logistic Regression} model, we experimented with the following solvers: Newton's solver, SAG and SAGA. We obtained the same accuracy scores , but Newton's solver took almost four times to run due to the computational power required to compute the inverse of the Hessian matrix.
 
-Hyper-parameter tuning for the SVM was conditioned by the high computational cost needed by the training of the SVM. So, we used a small number of records to feed the grid search, and the best parameters found could be not the true best parameters for the entire dataset. For 1.000 records, the best parameters are: C = 1.0, kernel = polynomial with degree 2.
+Hyper-parameters tuning for the \textbf{SVM} was conditioned by the high computational cost needed by the training of the SVM. So, we used a small number of records to feed the grid search, and the best parameters found could be not the true best parameters for the entire dataset. For 5.000 records, the best parameters are: C = 1.0, kernel = polynomial with degree 2.
 
-With respect to the Decision Tree model, we saw that without limiting its max depth, we would get a little bit of over-fitting since we scored 100\% accuracy on the train set, while obtaining 72\% accuracy on the validation set. Using 10 as max depth, we reduced the over-fitting obtaining an higher accuracy of 74\% on the validation set.
+With respect to the \textbf{Decision Tree} model, we saw that without limiting its max depth, we would get a little bit of over-fitting since we scored 100\% accuracy on the train set, while obtaining 68\% accuracy on the validation set. Using 10 as max depth, we reduced the over-fitting obtaining an higher accuracy of 74\% on the validation set.
 
-For the Random Forest, we saw that increasing the number of estimators and the max depth, we obtained better results, but increasing the risk of over-fitting. We obtained the best results using 500 estimators and 30 as maximum depth for each tree.
+For the \textbf{Random Forest}, we saw that increasing the number of estimators and the max depth, we obtained better results, but increasing the risk of over-fitting. We obtained the best results using 500 estimators and 30 as maximum depth for each tree.
 
-We saw that for Naive Bayes models, the best one is the Bernoulli Naive Bayes probably because most of the feature as just binary features which can assume 0s or 1s as values.
+We saw that for \textbf{Naive Bayes} models, the best one is the Bernoulli Naive Bayes probably because most of the feature are just binary features which can assume 0s or 1s as values.
 
-For the MLP we tested the architecture, the solver, the activation functions and the number of epochs. From the results we could only see that Adam solver obtains slightly better results than SGD.
+For the \textbf{MLP} we tested the architecture, the solver, the activation functions and the number of epochs. From the results we could only see that Adam solver obtains slightly better results than SGD.
 
-The accuracy obtained by each model on the test set is shown in the Figure \ref{img:accuracy}. Logistic Regression, SVM and Bernoulli Naive Bayes have comparable performances while the most successful models are the tree based ones: the Decision Tree and Random Forest. We can see that the latter is the best performer followed by the Multi-Layer Perceptron.
+The accuracy obtained by each model on the validation set is shown in the Figure \ref{img:accuracy}. Logistic Regression, SVM and Bernoulli Naive Bayes have comparable performances while the most successful models are the tree based ones: the Decision Tree and Random Forest. We can see that the latter is the best performer followed by the Multi-Layer Perceptron.
 
 \begin{figure}[h!]
 \centering
 \includegraphics[width=\textwidth]{accuracy-valset}
-\label{img:accuracy}
 \caption{Accuracy obtained for each model}
+\label{img:accuracy}
 \end{figure}
 
 In Figure \ref{img:roc-curve} and \ref{img:pr-curve}, we can see respectively the ROC and Precision-Recall curves for each model, confirming what we said about the accuracy.
@@ -268,7 +270,7 @@ In Figure \ref{img:roc-curve} and \ref{img:pr-curve}, we can see respectively th
 \label{img:pr-curve}
 \end{figure}
 
-Since the Random Forest is the best model for our task, we also computed the confusion matrix, depicted in Figure \ref{img:conf-matrix}, where we can see that the most accurately classified classes are severity 1 and 4. In the Table \ref{tab:random-forest-testset}, instead, we reported the metrics collected from this model on the test set.
+Since the \textbf{Random Forest} is the best model for our task, we also computed the confusion matrix, depicted in Figure \ref{img:conf-matrix}, where we can see that the most accurately classified classes are severity 1 and 4. In the Table \ref{tab:random-forest-testset}, instead, we reported the metrics collected from this model on the test set.
 
 \begin{table}[h!]
 \center
@@ -276,16 +278,16 @@ Since the Random Forest is the best model for our task, we also computed the con
 \hline
 \textbf{Class} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\
 \hline
-1 & 0.90 & 0.97 & 0.93 \\
+1 & 0.88 & 0.95 & 0.91 \\
 \hline
-2 & 0.75 & 0.59 & 0.66 \\
+2 & 0.73 & 0.57 & 0.64 \\
 \hline
-3 & 0.70 & 0.65 & 0.67 \\
+3 & 0.69 & 0.63 & 0.66 \\
 \hline
-4 & 0.74 & 0.91 & 0.81 \\
+4 & 0.73 & 0.91 & 0.81 \\
 \hline
 \hline
-\textbf{Macro-AVG} & 0.77 & 0.78 & 0.77\\
+\textbf{Macro-AVG} & 0.76 & 0.76 & 0.75\\
 \hline
 \end{tabular}
 \caption{Precision, Recall, F1-Score for the Random Forest model computed on the test set}
@@ -295,28 +297,23 @@ Since the Random Forest is the best model for our task, we also computed the con
 \begin{figure}[h!]
 \centering
 \includegraphics[width=0.5\textwidth]{best-model-testset}
-\label{img:conf-matrix}
 \caption{Confusion matrix of Random Forest model on test set}
+\label{img:conf-matrix}
 \end{figure}
 
-In the end, in the Figure \ref{img:acc-comp}, we present a comparison between our best model, the Random Forest, and a few models that we found inspecting the related works that used the same dataset.
-So we found a Kaggle notebook reporting the results obtained using a Neural Network and a Medium article which used several models to accomplish the same task as us.
+In the end, in the Figure \ref{img:acc-comp}, we present a comparison between our best model, the Random Forest, which obtained 76\% as the accuracy, and a few models that we found inspecting the related works that used the same dataset.
+As we said in the related work section, we found a Kaggle notebook reporting the results obtained using a Neural Network and a Medium article which used several models to accomplish the same task as us.
 
 \begin{figure}[h!]
 \centering
 \includegraphics[width=\textwidth]{accuracy-comparison}
-\label{img:acc-comp}
 \caption{Accuracy comparison between different related models}
+\label{img:acc-comp}
 \end{figure}
 
 \section{Conclusions}
 
-In conclusion we can say that accidents with severity 2 and 3 are the most difficult to predict as shown by the confusion matrix for each model. Instead, when the accident has a severity of 1 or 4, the prediction is more accurate as shown by the precision and recall of those classes.
-
-\newpage
-\null
-\newpage
-\null
+In conclusion, we can say that accidents with severity 2 and 3 are the most difficult to predict as shown by the confusion matrix for each model. Instead, when the accident has a severity of 1 or 4, the prediction is more accurate as shown by the precision and recall of those classes.
 
 \section{Contributions}
 
